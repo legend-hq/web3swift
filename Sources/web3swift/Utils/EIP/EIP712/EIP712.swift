@@ -9,11 +9,19 @@ public protocol EIP712Hashable {
     func hash() throws -> Data
 }
 
+public struct BigUInt96 {
+  public let value: BigUInt
+
+  public init(value: BigUInt) {
+    self.value = value
+  }
+}
+
 public class EIP712 {
     public typealias Address = EthereumAddress
     public typealias UInt256 = BigUInt
     public typealias UInt8 = Swift.UInt8
-    public typealias UInt96 = BigUInt
+    public typealias UInt96 = BigUInt96
     public typealias Bytes = Data
     public typealias BytesArray = [Data]
 }
@@ -58,8 +66,8 @@ public extension EIP712Hashable {
                 result = data.sha3(.keccak256)
             case is EIP712.UInt8:
                 result = ABIEncoder.encodeSingleType(type: .uint(bits: 8), value: field)!
-            case is EIP712.UInt96:
-                result = ABIEncoder.encodeSingleType(type: .uint(bits: 96), value: field)!
+            case let v as EIP712.UInt96:
+                result = ABIEncoder.encodeSingleType(type: .uint(bits: 96), value: v.value)!
             case is EIP712.UInt256:
                 result = ABIEncoder.encodeSingleType(type: .uint(bits: 256), value: field)!
             case is EIP712.Address:
@@ -148,9 +156,7 @@ fileprivate extension EIP712Hashable {
             }
             return typeName + " " + key
         }
-        let res = name + "(" + parameters.joined(separator: ",") + ")"
-        print("encodePrimaryType: \(res)")
-        return res;
+        return name + "(" + parameters.joined(separator: ",") + ")"
     }
 }
 
