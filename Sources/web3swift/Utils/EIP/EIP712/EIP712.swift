@@ -148,7 +148,9 @@ fileprivate extension EIP712Hashable {
             }
             return typeName + " " + key
         }
-        return name + "(" + parameters.joined(separator: ",") + ")"
+        let res = name + "(" + parameters.joined(separator: ",") + ")"
+        print("encodePrimaryType: \(res)")
+        return res;
     }
 }
 
