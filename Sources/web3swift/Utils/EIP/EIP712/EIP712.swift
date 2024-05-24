@@ -33,9 +33,21 @@ public class EIP712 {
 // address verifyingContract the address of the contract that will verify the signature. The user-agent may do contract specific phishing prevention.
 // bytes32 salt an disambiguating salt for the protocol. This can be used as a domain separator of last resort.
 public struct EIP712Domain: EIP712Hashable {
+    public let name: String?
+    public let version: String?
     public let chainId: EIP712.UInt256?
     public let verifyingContract: EIP712.Address
+
     public init(chainId: EIP712.UInt256?, verifyingContract: EIP712.Address) {
+        self.name = nil
+        self.version = nil
+        self.chainId = chainId
+        self.verifyingContract = verifyingContract
+    }
+
+    public init(name: String?, version: String?, chainId: EIP712.UInt256?, verifyingContract: EIP712.Address) {
+        self.name = name
+        self.version = version
         self.chainId = chainId
         self.verifyingContract = verifyingContract
     }
