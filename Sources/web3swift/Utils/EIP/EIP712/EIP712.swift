@@ -66,6 +66,8 @@ public extension EIP712Hashable {
                 result = ABIEncoder.encodeSingleType(type: .address, value: field)!
             case let boolean as Bool:
                 result = ABIEncoder.encodeSingleType(type: .uint(bits: 8), value: boolean ? 1 : 0)!
+            case let arr as [Data]:
+                result = arr.map { $0.sha3(.keccak256) }.reduce(Data(), +).sha3(.keccak256)
             case let hashable as EIP712Hashable:
                 result = try hashable.hash()
             default:
