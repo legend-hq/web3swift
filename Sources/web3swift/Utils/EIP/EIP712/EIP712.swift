@@ -157,6 +157,7 @@ fileprivate extension EIP712Hashable {
 
             let typeName: String
             switch value {
+            case is Optional<String>: typeName = "string"
             case is String: typeName = "string"
             case is EIP712.UInt8: typeName = "uint8"
             case is EIP712.UInt96: typeName = "uint96"
