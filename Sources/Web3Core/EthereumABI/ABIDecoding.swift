@@ -119,11 +119,7 @@ extension ABIDecoder {
                         let (v, c) = decodeSingleType(type: subType, data: dataSlice, pointer: subpointer)
                         guard let valueUnwrapped = v, let consumedUnwrapped = c else {break}
                         toReturn.append(valueUnwrapped)
-                        if subType.isStatic {
-                            subpointer = subpointer + consumedUnwrapped
-                        } else {
-                            subpointer = consumedUnwrapped // need to go by nextElementPointer
-                        }
+                        subpointer = subpointer + consumedUnwrapped
                     }
                     return (toReturn, nextElementPointer)
                 }
@@ -169,6 +165,8 @@ extension ABIDecoder {
                     } else {
                         consumed = consumed + consumedUnwrapped
                     }
+                case .dynamicBytes:
+                    consumed = consumedUnwrapped
                 default:
                     consumed = consumed + consumedUnwrapped
                 }
