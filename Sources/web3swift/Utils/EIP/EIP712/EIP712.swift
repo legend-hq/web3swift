@@ -113,6 +113,14 @@ public func eip712hash(domainSeparatorHash: Data, messageHash: Data) -> Data {
     (Data([UInt8(0x19), UInt8(0x01)]) + domainSeparatorHash + messageHash).sha3(.keccak256)
 }
 
+public func eip712message(domainSeparator: EIP712Hashable, message: EIP712Hashable) throws -> Data {
+    try eip712message(domainSeparatorHash: domainSeparator.hash(), messageHash: message.hash())
+}
+
+public func eip712message(domainSeparatorHash: Data, messageHash: Data) -> Data {
+    (Data([UInt8(0x19), UInt8(0x01)]) + domainSeparatorHash + messageHash)
+}
+
 // MARK: - Additional private and public extensions with support members
 
 public extension EIP712Hashable {
